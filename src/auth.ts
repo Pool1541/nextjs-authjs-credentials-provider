@@ -1,8 +1,9 @@
-import NextAuth, { Session } from "next-auth"
+import NextAuth, { CredentialsSignin, Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { signInSchema } from "./utils/zod";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { verify } from 'jsonwebtoken'
+import userRepository from '@/repository/user.repository'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -13,15 +14,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         const { email, password } = await signInSchema.parseAsync(credentials)
+        const user = await userRepository.getUserByEmail(email);
 
-        // Lógica de autenticación personalizada
-        if (email === "pool_1541@hotmail.com" && password === "password123") {
-          // Retornar el objeto de usuario si las credenciales son válidas
-          return { id: "1", name: "John Doe", email: "pool_1541@hotmail.com" };
-        } else {
-          // Lanzar un error si las credenciales no son válidas
+        if (!user) {
           throw new Error("Invalid email or password");
         }
+        if (user.password !== password) {
+          throw new CredentialsSignin("Invalid email or password");
+        }
+        
+        return { id: user.id, name: user.name, email: user.email };
+
+
+        // // Lógica de autenticación personalizada
+        // if (email === "pool_1541@hotmail.com" && password === "password123") {
+        //   // Retornar el objeto de usuario si las credenciales son válidas
+        //   return { id: "1", name: "John Doe", email: "pool_1541@hotmail.com" };
+        // } else {
+        //   // Lanzar un error si las credenciales no son válidas
+        //   throw new Error("Invalid email or password");
+        // }
       },
     }),
   ],
@@ -32,31 +44,40 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: "my-secret",
   callbacks: {
     authorized: async ({request, auth}: { request: NextRequest, auth: Session | null}) => {
-      const protecterRoutes = ["/dashboard"];
+      const protectedRoutes = ["/dashboard"];
       const url = request.nextUrl.pathname;
-      const isProtectedRoute = protecterRoutes.includes(url);
+      const isProtectedRoute = protectedRoutes.includes(url);
 
-      if (url === "/") return true;
+      if (!isProtectedRoute) return true;
 
-      if (!auth) {
+      if (auth) {
+        const { user, expires } = auth;
+        console.log('authorized', { user, expires});
+        // TODO: Validar si la sesión está expirada
+        if (!user) {
+          return false;
+        }
+
+        return true;
+      } else {
         return false;
       }
-
-      if (isProtectedRoute) {
-        const { user, expires } = auth;
-        console.log({ user, expires});
-
-        if (user) {
-          return true;
-        }
-      }
-
-      return false
+    },
+    signIn: async ({ user, account }) => {
+      // it is called before then "authorized" callback
+      console.log('signIn-callback', user, account);
+      return true
     }
   },
   pages: {
     signIn: '/auth/sign-in',
-  }
+    newUser: '/auth/sign-up',
+  },
+  events: {
+    createUser: async ({ user }) => {
+      console.log("User created", user);
+    }
+  },
 });
 
 function validateAuthToken(authToken: any) {
