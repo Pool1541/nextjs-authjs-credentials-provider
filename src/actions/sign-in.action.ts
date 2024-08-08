@@ -38,19 +38,3 @@ export async function authenticate(
 		return { success: false, errors: 'unknown error' };
 	}
 }
-
-// export async function authenticate(state: any, formData: FormData): Promise<{data: any, errors: any}> {
-//   const email = formData.get('email');
-//   const password = formData.get('password');
-
-//   const validationResult = signInSchema.safeParse({
-//     email,
-//     password
-//   });
-
-//   if (!validationResult.success) {
-//     return {data: null, errors: validationResult.error.flatten().fieldErrors};
-//   }
-
-//   return {data: validationResult.data, errors: null};
-// }
