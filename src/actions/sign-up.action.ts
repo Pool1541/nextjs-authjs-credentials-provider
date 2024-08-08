@@ -23,6 +23,17 @@ export async function createUser(
 			errors: validationResult.error?.flatten().fieldErrors,
 		};
 	}
+	// TODO: verificar si el usuario ya existe
+	const user = await userRepository.getUserByEmail(validationResult.data.email);
+
+	if (user) {
+		return {
+			success: false,
+			errors: {
+				email: ['User already exists'],
+			},
+		};
+	}
 
 	await userRepository.saveUser({
 		email: validationResult.data.email,
@@ -38,7 +49,6 @@ export async function createUser(
 			return redirect('/dashboard');
 		}
 		if (error instanceof CredentialsSignin) {
-			// console.log(error);
 			const errorMessage = error.message.split('.')[0];
 			return { success: false, errors: errorMessage };
 		}
