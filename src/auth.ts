@@ -28,7 +28,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			},
 		}),
 	],
-	// Opcional: Configuración adicional de NextAuth
 	session: {
 		strategy: 'jwt',
 	},
