@@ -2,7 +2,6 @@ import NextAuth, { CredentialsSignin, Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { signInSchema } from './utils/zod';
 import { NextRequest } from 'next/server';
-import { verify } from 'jsonwebtoken';
 import userRepository from '@/repository/user.repository';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
