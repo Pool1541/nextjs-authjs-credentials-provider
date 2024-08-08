@@ -30,7 +30,6 @@ export async function authenticate(
 			return redirect('/dashboard');
 		}
 		if (error instanceof CredentialsSignin) {
-			// console.log(error);
 			const errorMessage = error.message.split('.')[0];
 			return { success: false, errors: errorMessage };
 		}
