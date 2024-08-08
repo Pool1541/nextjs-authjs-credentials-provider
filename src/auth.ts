@@ -23,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				const user = await userRepository.getUserByEmail(email);
 
 				if (!user) {
-					throw new Error('Invalid email or password');
+					throw new CredentialsSignin('User not found');
 				}
 
 				if (user.password !== password) {
