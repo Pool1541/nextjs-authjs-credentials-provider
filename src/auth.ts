@@ -82,23 +82,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		},
 	},
 });
-
-function validateAuthToken(authToken: any) {
-	// Implement your logic to validate the authToken here
-	// For example, you can check if the authToken is a valid JWT token
-	// and if it has not expired
-	// You can use libraries like jsonwebtoken to help with this
-
-	// Here's an example implementation using jsonwebtoken library
-	const secret = 'my-secret';
-
-	try {
-		// Verify the authToken using the secret key
-		const decoded = verify(authToken, secret);
-		console.log(decoded);
-
-		return true;
-	} catch (error) {
-		return false;
-	}
-}
