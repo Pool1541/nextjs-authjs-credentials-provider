@@ -29,11 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					throw new CredentialsSignin('Invalid email or password');
 				}
 
-				return {
-					id: user.id,
-					name: user.name,
-					email: user.email,
-				};
+				return user;
 			},
 		}),
 	],
@@ -51,10 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 			if (auth) {
 				const { user, expires } = auth;
-				console.log('authorized', {
-					user,
-					expires,
-				});
 				// TODO: Validar si la sesión está expirada
 				if (!user) {
 					return false;
@@ -67,9 +59,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		},
 		signIn: async ({ user, account }) => {
 			// it is called before then "authorized" callback
-			console.log('signIn-callback', user, account);
 			return true;
 		},
+		jwt: async ({ token, user }) => {
+			if (user) {
+				token.role = user.role;
+			}
+			return token;
+		},
+		session: async ({ session, token }) => {
+			if(session.user) {
+				session.user.role = token.role;
+			};
+			return session;
+		}
 	},
 	pages: {
 		signIn: '/auth/sign-in',

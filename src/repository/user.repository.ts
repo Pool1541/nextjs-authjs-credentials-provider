@@ -1,17 +1,25 @@
 /* eslint-disable import/no-anonymous-default-export */
+
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
 export interface User {
   id: string;
   name: string;
   email: string;
   password: string;
+  role: Role
 }
 
 const USERS_STORE: Map<string, User> = new Map<string, User>();
-USERS_STORE.set("pool_1541@hotmail.com", { id: "1", name: "Pool Llerena", email: "pool_1541@hotmail.com", password: "password123" });
+USERS_STORE.set("pool_1541@hotmail.com", { id: "1", name: "Pool Llerena", email: "pool_1541@hotmail.com", password: "password123", role: Role.ADMIN });
 
-async function saveUser(user: Omit<User, 'id'> & Partial<Pick<User, 'id'>>): Promise<void> {
+async function saveUser(user: Omit<User, 'id' | 'role'> & Partial<Pick<User, 'id' | 'role'>>): Promise<void> {
   const newUser = {
     id: Math.random().toString(36).substring(7),
+    role: user.role || Role.USER,
     ...user,
   }
   
