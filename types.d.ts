@@ -8,6 +8,7 @@ declare module "next-auth" {
    */
   interface User {
     role: Role;
+    emailVerified: Date | null;
   }
   /**
    * The shape of the account object returned in the OAuth providers' `account` callback,
@@ -21,6 +22,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       role: Role;
+      emailVerified: Date | null;
     } & DefaultSession["user"];
   }
 }
@@ -31,7 +33,10 @@ import { JWT } from "next-auth/jwt"
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
-    /** OpenID ID Token */
-    role: Role
+    /** User role
+     * @default USER
+     */
+    role: Role;
+    emailVerified: Date | null;
   }
 }
