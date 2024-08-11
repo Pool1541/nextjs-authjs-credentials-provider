@@ -1,11 +1,11 @@
 'use server';
 
-import { signIn } from '@/auth';
-import { signUpSchema } from '@/utils/zod';
-import { isRedirectError } from 'next/dist/client/components/redirect';
-import { redirect } from 'next/navigation';
-import userRepository from '@/repository/user.repository';
 import { CredentialsSignin } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { signIn } from '@/auth';
+import { isRedirectError } from 'next/dist/client/components/redirect';
+import userRepository from '@/repository/user-prisma.repository';
+import { saltAndHashPassword, signUpSchema } from '@/helpers';
 
 export async function createUser(
 	state: any,
@@ -35,10 +35,12 @@ export async function createUser(
 		};
 	}
 
+	const hashedPassword = await saltAndHashPassword(validationResult.data.password);
+
 	await userRepository.saveUser({
 		email: validationResult.data.email,
 		name: validationResult.data.name,
-		password: validationResult.data.password,
+		password: hashedPassword,
 	});
 
 	try {
