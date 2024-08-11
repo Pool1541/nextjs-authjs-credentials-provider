@@ -1,4 +1,4 @@
-import { sendEmailVerification } from '../utils/resend';
+import { sendEmailVerification } from '@/helpers/resend';
 
 export default function SendEmailVerificationButton() {
 	return (
@@ -7,7 +7,7 @@ export default function SendEmailVerificationButton() {
 				'use server';
 
 				const response = await sendEmailVerification();
-        console.log({ response })
+				console.log({ response });
 			}}>
 			<button
 				type="submit"

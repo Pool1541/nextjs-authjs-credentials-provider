@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { auth } from '@/auth';
-import { wait } from '@/utils/utils';
+import { wait } from '@/helpers/utils';
 
 export default async function UserInfo() {
 	const session = await auth();
