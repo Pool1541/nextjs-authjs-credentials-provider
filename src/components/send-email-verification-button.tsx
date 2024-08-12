@@ -6,8 +6,8 @@ export default function SendEmailVerificationButton() {
 			action={async () => {
 				'use server';
 
-				const response = await sendEmailVerification();
-				console.log({ response });
+				// const response = await sendEmailVerification();
+				// console.log({ response });
 			}}>
 			<button
 				type="submit"

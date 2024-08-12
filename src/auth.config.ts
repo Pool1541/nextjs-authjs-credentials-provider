@@ -53,7 +53,7 @@ const authConfig: NextAuthConfig = {
 			if (!auth?.user) return false;
 
 			// Verificar si el usuario verificó su email
-			if (!auth.user.emailVerified)
+			if (!auth.user.emailVerified && url !== '/auth/email-verify')
 				return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/auth/email-verify`);
 
 			return true;
@@ -62,7 +62,12 @@ const authConfig: NextAuthConfig = {
 			// it is called before "authorized" callback
 			return true;
 		},
-		jwt: async ({ token, user }) => {
+		jwt: async ({ token, user, trigger, session }) => {
+			if (trigger === 'update') {
+				token.emailVerified = session.user.emailVerified;
+				return token;
+			}
+
 			if (user) {
 				token.role = user.role;
 				token.emailVerified = user.emailVerified;

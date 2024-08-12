@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 import { isRedirectError } from 'next/dist/client/components/redirect';
 import userRepository from '@/repository/user-prisma.repository';
-import { saltAndHashPassword, signUpSchema } from '@/helpers';
+import { saltAndHashPassword, sendEmailVerification, signUpSchema } from '@/helpers';
+import SendEmailVerificationButton from '../components/send-email-verification-button';
 
 export async function createUser(
 	state: any,
@@ -42,6 +43,10 @@ export async function createUser(
 		name: validationResult.data.name,
 		password: hashedPassword,
 	});
+
+	const SendEmailVerificationResponse = await sendEmailVerification(validationResult.data.email);
+
+	console.log(SendEmailVerificationResponse);
 
 	try {
 		await signIn('credentials', validationResult.data);

@@ -4,7 +4,7 @@ import authConfig from './auth.config';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './repository/user-prisma.repository';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
 	adapter: PrismaAdapter(prisma),
 	...authConfig,
 	session: {
