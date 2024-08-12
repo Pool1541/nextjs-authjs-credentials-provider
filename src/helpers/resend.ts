@@ -14,7 +14,7 @@ export const sendEmailVerification = async (
 ): Promise<SendEmailVerificationResponse> => {
 	const token = nanoid();
 	await verificationTokenRepository.createVerificationToken(email, token);
-	const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+	const baseUrl = process.env.VERCEL_URL || process.env.BASE_URL;
 	try {
 		await resend.emails.send({
 			from: 'Growiit <contact@growiit.com>',
