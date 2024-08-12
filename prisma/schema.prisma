@@ -65,11 +65,11 @@ model Session {
 }
  
 model VerificationToken {
-  identifier String
+  identifier String  @unique
   token      String
   expires    DateTime
  
-  @@id([identifier, token])
+  @@id([identifier])
 
   @@map("verificationtokens")
 }
