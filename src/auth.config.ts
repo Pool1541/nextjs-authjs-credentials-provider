@@ -1,8 +1,7 @@
-import { CredentialsSignin, type NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import userRepository from './repository/user-prisma.repository';
+import { CredentialsSignin, type NextAuthConfig } from 'next-auth';
 import { comparePassword } from './helpers';
-import { NextResponse } from 'next/server';
+import userRepository from './repository/user-prisma.repository';
 
 const authConfig: NextAuthConfig = {
 	providers: [
@@ -51,10 +50,6 @@ const authConfig: NextAuthConfig = {
 
 			// Si el usuario no está autenticado, se redirige a la página de inicio de sesión
 			if (!auth?.user) return false;
-
-			// Verificar si el usuario verificó su email
-			if (!auth.user.emailVerified && url !== '/auth/email-verify')
-				return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/auth/email-verify`);
 
 			return true;
 		},

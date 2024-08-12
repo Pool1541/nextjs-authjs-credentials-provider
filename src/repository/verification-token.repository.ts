@@ -2,11 +2,11 @@
 
 import { prisma } from './user-prisma.repository';
 
-async function getVerificationTokenByIdentifier(identifier: string) {
+async function getVerificationTokenByToken(token: string) {
 	try {
-		return await prisma.verificationToken.findUnique({
+		return await prisma.verificationToken.findFirst({
 			where: {
-				identifier,
+				token,
 			},
 		});
 	} catch (error) {
@@ -41,7 +41,7 @@ async function deleteVerificationToken(identifier: string) {
 }
 
 export default {
-	getVerificationTokenByIdentifier,
+	getVerificationTokenByToken,
 	createVerificationToken,
 	deleteVerificationToken,
 };

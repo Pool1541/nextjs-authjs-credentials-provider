@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import SendEmailVerificationButton from '@/components/send-email-verification-button';
 
 export const metadata: Metadata = {
 	title: 'Home | Acme',
@@ -16,7 +15,6 @@ export default function Home() {
 					Dashboard
 				</Link>
 				<div className="size-14"></div>
-				<SendEmailVerificationButton />
 			</div>
 		</main>
 	);
