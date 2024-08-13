@@ -1,6 +1,6 @@
 import Credentials from 'next-auth/providers/credentials';
 import { CredentialsSignin, type NextAuthConfig } from 'next-auth';
-import { comparePassword } from './helpers';
+import { comparePassword, EmailNotVerified } from './helpers';
 import userRepository from './repository/user-prisma.repository';
 
 const authConfig: NextAuthConfig = {
@@ -28,6 +28,9 @@ const authConfig: NextAuthConfig = {
 				const isValidPassword = await comparePassword(password, user.password!);
 
 				if (!isValidPassword) throw new CredentialsSignin('Invalid email or password');
+
+				// Validar si tien el email verificado
+				if (!user.emailVerified) throw new EmailNotVerified();
 
 				return {
 					email: user.email,
