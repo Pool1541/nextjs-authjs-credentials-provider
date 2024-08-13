@@ -9,12 +9,18 @@ type SendEmailVerificationResponse = {
 	error: string | null;
 };
 
-export const sendEmailVerification = async (
-	email: string,
-): Promise<SendEmailVerificationResponse> => {
+type recreateVerificationTokenResponse = {
+	success: boolean;
+	errors: string | null;
+};
+
+export async function sendEmailVerification(email: string): Promise<SendEmailVerificationResponse> {
 	const token = nanoid();
 	await verificationTokenRepository.createVerificationToken(email, token);
-	const baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` || process.env.BASE_URL;
+	const baseUrl =
+		process.env.VERCEL_ENV === 'production'
+			? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+			: 'http://localhost:3000';
 	try {
 		await resend.emails.send({
 			from: 'Growiit <contact@growiit.com>',
@@ -38,4 +44,28 @@ export const sendEmailVerification = async (
 			error: (error as Error).message,
 		};
 	}
-};
+}
+
+export async function recreateVerificationToken(
+	userEmail: string,
+): Promise<recreateVerificationTokenResponse> {
+	try {
+		await verificationTokenRepository.deleteVerificationToken(userEmail);
+		const sendEmailVerificationResponse = await sendEmailVerification(userEmail);
+
+		if (!sendEmailVerificationResponse.success) {
+			throw new Error('Error sending email verification');
+		}
+
+		return {
+			success: true,
+			errors: null,
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			success: false,
+			errors: (error as Error).message,
+		};
+	}
+}
