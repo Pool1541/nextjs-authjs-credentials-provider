@@ -16,8 +16,19 @@ export default async function EmailVerifyPage({
 
 	if (session?.user?.emailVerified) return redirect('/dashboard');
 	if (token) {
-		const verificationToken = await verificationTokenRepository.getVerificationTokenByToken(token);
+		const verificationToken = await verificationTokenRepository.getVerificationToken(token);
 		if (!verificationToken) {
+			return (
+				<div className="flex items-center justify-center h-screen">
+					<div className="p-8 rounded shadow-md w-auto">
+						<h1 className="text-2xl font-semibold text-center">El token espiró o es inválido</h1>
+					</div>
+				</div>
+			);
+		}
+
+		const tokenIsExpired = verificationToken!.expires.getTime() <= verificationDate.getTime();
+		if (tokenIsExpired) {
 			return (
 				<div className="flex items-center justify-center h-screen">
 					<div className="p-8 rounded shadow-md w-auto">
@@ -38,7 +49,10 @@ export default async function EmailVerifyPage({
 					<div className="p-8 rounded shadow-md w-96">
 						<h1 className="text-2xl font-semibold text-center">Se verificó el email con éxito</h1>
 						<p className="mt-4 text-center text-gray-500">
-							<Link href={'/auth/sign-in'}>Inicia sesión</Link> con tu cuenta para continuar.
+							<Link href={'/auth/sign-in'} className="underline-offset-2">
+								Inicia sesión
+							</Link>{' '}
+							con tu cuenta para continuar.
 						</p>
 					</div>
 				</div>
