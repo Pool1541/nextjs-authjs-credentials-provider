@@ -1,6 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-
-import { prisma } from './user-prisma.repository';
+import prisma from '@/shared/prisma';
 
 async function getVerificationToken(parameter: string) {
 	try {
