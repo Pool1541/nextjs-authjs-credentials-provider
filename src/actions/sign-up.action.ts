@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import userRepository from '@/repository/user-prisma.repository';
+import { userRepository } from '@/repository/user/dependencies';
 import { saltAndHashPassword, sendEmailVerification, signUpSchema } from '@/helpers';
 
 export async function createUser(
