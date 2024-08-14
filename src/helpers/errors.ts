@@ -6,3 +6,17 @@ export class EmailNotVerified extends AuthError {
 		this.name = 'EmailNotVerified';
 	}
 }
+
+export class NotFoundException extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'NotFoundException';
+	}
+}
+
+export class BadRequestException extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'BadRequestException';
+	}
+}
