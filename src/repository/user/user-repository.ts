@@ -1,4 +1,3 @@
-import { NotFoundException } from '@/helpers';
 import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/types/user';
 
 export class UserRepository {
@@ -6,8 +5,6 @@ export class UserRepository {
 
 	async getUserByEmail(email: string) {
 		const user = await this.db.getOne(email);
-
-		if (!user) throw new NotFoundException(`User with email ${email} not found`);
 
 		return user;
 	}

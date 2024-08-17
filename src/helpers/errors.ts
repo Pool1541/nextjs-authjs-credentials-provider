@@ -20,3 +20,10 @@ export class BadRequestException extends Error {
 		this.name = 'BadRequestException';
 	}
 }
+
+export class ConflictException extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'ConflictException';
+	}
+}
