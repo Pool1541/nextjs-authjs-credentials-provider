@@ -1,4 +1,4 @@
-import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/types/user';
+import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/server/types/user';
 
 export class UserRepository {
 	constructor(private readonly db: Repository<User, CreateUserDTO>) {}

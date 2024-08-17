@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 import { nanoid } from 'nanoid';
-import verificationTokenRepository from '@/repository/verification-token.repository';
+import verificationTokenRepository from '@/server/repository/verification-token.repository';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

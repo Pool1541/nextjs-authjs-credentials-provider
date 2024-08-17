@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
-import verificationTokenRepository from '@/repository/verification-token.repository';
-import { userRepository } from '@/repository';
+import verificationTokenRepository from '@/server/repository/verification-token.repository';
+import { userRepository } from '@/server/repository';
 
 export default async function EmailVerifyPage({
 	searchParams,

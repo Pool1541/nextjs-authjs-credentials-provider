@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { ConflictException } from '@/helpers';
-import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/types/user';
-import prisma from '@/shared/prisma';
+import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/server/types/user';
+import prisma from '@/server/shared/prisma';
 
 export class PrismaUserRepository implements Repository<User, CreateUserDTO> {
 	async getOne(email: string): Promise<User | null> {
