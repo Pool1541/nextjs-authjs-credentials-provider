@@ -1,6 +1,6 @@
 import Credentials from 'next-auth/providers/credentials';
 import { CredentialsSignin, type NextAuthConfig } from 'next-auth';
-import { comparePassword, EmailNotVerified } from './helpers';
+import { comparePassword, EmailNotVerified } from '@/server/helpers';
 import { userRepository } from '@/server/repository';
 
 const authConfig: NextAuthConfig = {

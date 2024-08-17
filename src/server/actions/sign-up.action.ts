@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { userRepository } from '@/server/repository';
-import { saltAndHashPassword, sendEmailVerification, signUpSchema } from '@/helpers';
+import { saltAndHashPassword, sendEmailVerification, signUpSchema } from '@/server/helpers';
 
 export async function createUser(
 	state: any,

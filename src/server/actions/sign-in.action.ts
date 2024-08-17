@@ -1,8 +1,7 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { EmailNotVerified, recreateVerificationToken } from '@/helpers';
-import { signInSchema } from '@/helpers/zod';
+import { EmailNotVerified, recreateVerificationToken, signInSchema } from '@/server/helpers';
 import { CredentialsSignin } from 'next-auth';
 import { isRedirectError } from 'next/dist/client/components/redirect';
 import { redirect } from 'next/navigation';

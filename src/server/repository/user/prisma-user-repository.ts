@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { ConflictException } from '@/helpers';
+import { ConflictException } from '@/server/helpers';
 import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/server/types/user';
 import prisma from '@/server/shared/prisma';
 
