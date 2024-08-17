@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
-import userRepository from '@/repository/user-prisma.repository';
 import verificationTokenRepository from '@/repository/verification-token.repository';
+import { userRepository } from '@/repository';
 
 export default async function EmailVerifyPage({
 	searchParams,

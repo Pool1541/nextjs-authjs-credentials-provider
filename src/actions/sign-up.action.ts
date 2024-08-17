@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { userRepository } from '@/repository/user/dependencies';
+import { userRepository } from '@/repository';
 import { saltAndHashPassword, sendEmailVerification, signUpSchema } from '@/helpers';
 
 export async function createUser(
