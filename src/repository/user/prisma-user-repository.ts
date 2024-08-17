@@ -1,5 +1,5 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { BadRequestException } from '@/helpers';
+import { Prisma } from '@prisma/client';
+import { ConflictException } from '@/helpers';
 import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/types/user';
 import prisma from '@/shared/prisma';
 
@@ -19,11 +19,12 @@ export class PrismaUserRepository implements Repository<User, CreateUserDTO> {
 			const newUser = await prisma.user.create({
 				data,
 			});
+
 			return newUser;
 		} catch (error) {
-			if (error instanceof PrismaClientKnownRequestError) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
 				if (error.code === 'P2002')
-					throw new BadRequestException(`User with email ${data.email} already exists`);
+					throw new ConflictException(`User with email ${data.email} already exists`);
 			}
 
 			throw error;
