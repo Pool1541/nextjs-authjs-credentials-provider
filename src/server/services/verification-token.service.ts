@@ -1,13 +1,10 @@
-import { VerificationToken } from '@prisma/client';
-import { CreateVerificationTokenDTO } from '@/server/types/verification-token';
-import { VerificationTokenRepository } from '@/server/repository';
 import { nanoid } from 'nanoid';
-import { Resend } from 'resend';
+import { VerificationTokenRepository } from '@/server/repository';
 import { EmailService } from './email.service';
 
 export class VerificationTokenService {
 	private readonly BASE_URL: string =
-		process.env.VERCEL_ENV === 'production'
+		process.env.VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'preview'
 			? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
 			: 'http://localhost:3000';
 
