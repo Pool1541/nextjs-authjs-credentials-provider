@@ -18,5 +18,4 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
 			console.log('User created', user);
 		},
 	},
-	debug: true,
 });
