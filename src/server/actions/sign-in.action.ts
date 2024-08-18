@@ -1,11 +1,11 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { EmailNotVerified, recreateVerificationToken } from '@/helpers';
-import { signInSchema } from '@/helpers/zod';
+import { EmailNotVerified, signInSchema } from '@/server/helpers';
 import { CredentialsSignin } from 'next-auth';
 import { isRedirectError } from 'next/dist/client/components/redirect';
 import { redirect } from 'next/navigation';
+import { verificationTokenService } from '@/server/services';
 
 export async function authenticate(
 	state: any,
@@ -36,8 +36,13 @@ export async function authenticate(
 		}
 
 		if (error instanceof EmailNotVerified) {
-			const { success } = await recreateVerificationToken(validationResult.data.email);
-			if (!success) return { success: false, errors: 'Error sending email verification' };
+			try {
+				await verificationTokenService.recreateVerificationToken(validationResult.data.email);
+			} catch (error) {
+				if (error instanceof Error) {
+					return { success: false, errors: 'Error sending email verification' };
+				}
+			}
 
 			return redirect('/auth/email-verify');
 		}

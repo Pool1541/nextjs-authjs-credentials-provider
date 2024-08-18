@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { createUser } from '@/actions/sign-up.action';
+
+import { createUser } from '@/server/actions';
 import { useFormState, useFormStatus } from 'react-dom';
 
 type authenticateState = {

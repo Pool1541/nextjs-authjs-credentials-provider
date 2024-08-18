@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { authenticate } from '@/actions/sign-in.action';
+
+import { authenticate } from '@/server/actions';
 import Link from 'next/link';
 import { useFormState, useFormStatus } from 'react-dom';
 
