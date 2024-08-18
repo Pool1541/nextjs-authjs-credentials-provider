@@ -1,7 +1,9 @@
 import Credentials from 'next-auth/providers/credentials';
 import { CredentialsSignin, type NextAuthConfig } from 'next-auth';
 import { comparePassword, EmailNotVerified } from '@/server/helpers';
-import { userRepository } from '@/server/repository';
+import { UserRepository } from '@/server/repository';
+
+const userRepository = new UserRepository();
 
 const authConfig: NextAuthConfig = {
 	providers: [
@@ -18,7 +20,7 @@ const authConfig: NextAuthConfig = {
 			},
 			authorize: async (credentials) => {
 				const { email, password } = credentials as Record<'email' | 'password', string>;
-				const user = await userRepository.getUserByEmail(email);
+				const user = await userRepository.getOne(email);
 
 				if (!user) {
 					throw new CredentialsSignin('User not found');
