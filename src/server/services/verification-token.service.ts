@@ -3,6 +3,7 @@ import { CreateVerificationTokenDTO } from '@/server/types/verification-token';
 import { VerificationTokenRepository } from '@/server/repository';
 import { nanoid } from 'nanoid';
 import { Resend } from 'resend';
+import { EmailService } from './email.service';
 
 export class VerificationTokenService {
 	private readonly BASE_URL: string =
@@ -12,7 +13,7 @@ export class VerificationTokenService {
 
 	constructor(
 		private readonly repository: VerificationTokenRepository,
-		private readonly emailService: Resend,
+		private readonly emailService: EmailService,
 	) {}
 
 	async sendVerificationEmail(identifier: string): Promise<void> {
@@ -23,7 +24,7 @@ export class VerificationTokenService {
 			expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
 		});
 
-		await this.emailService.emails.send({
+		await this.emailService.send({
 			from: 'Growiit <contact@growiit.com>',
 			to: identifier,
 			subject: 'Verify your email',
