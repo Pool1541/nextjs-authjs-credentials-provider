@@ -1,10 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { ConflictException } from '@/server/helpers';
-import {
-	Repository,
-	CreateVerificationTokenDTO,
-	VerificationToken,
-} from '@/server/types/verification-token';
+import { CreateVerificationTokenDTO, VerificationToken } from '@/server/types/verification-token';
+import { Repository } from '@/server/types/shared';
 import prisma from '@/server/shared/prisma';
 
 export class VerificationTokenRepository

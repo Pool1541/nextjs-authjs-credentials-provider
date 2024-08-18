@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { ConflictException } from '@/server/helpers';
-import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/server/types/user';
+import { CreateUserDTO, UpdateUserDTO, User } from '@/server/types/user';
+import { Repository } from '@/server/types/shared';
 import prisma from '@/server/shared/prisma';
 
 export class UserRepository implements Repository<User, CreateUserDTO> {
