@@ -27,3 +27,10 @@ export class ConflictException extends Error {
 		this.name = 'ConflictException';
 	}
 }
+
+export class TokenExpiredException extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'TokenExpiredException';
+	}
+}
