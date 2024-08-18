@@ -1,8 +1,9 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { userRepository } from '@/server/repository';
-import { saltAndHashPassword, sendEmailVerification, signUpSchema } from '@/server/helpers';
+import { userService } from '../services';
+import { ConflictException, signUpSchema } from '../helpers';
+import { isRedirectError } from 'next/dist/client/components/redirect';
 
 export async function createUser(
 	state: any,
@@ -17,47 +18,16 @@ export async function createUser(
 	if (!validationResult.success) {
 		return {
 			success: false,
-			errors: validationResult.error?.flatten().fieldErrors,
+			errors: validationResult.error.flatten().fieldErrors,
 		};
 	}
 
-	const user = await userRepository.getUserByEmail(validationResult.data.email);
-
-	if (user) {
-		return {
-			success: false,
-			errors: {
-				email: ['User already exists'],
-			},
-		};
+	try {
+		await userService.createUser(validationResult.data);
+		redirect('/auth/email-verify');
+	} catch (error) {
+		if (isRedirectError(error)) throw error;
+		if (error instanceof ConflictException) return { success: false, errors: error.message };
+		else return { success: false, errors: 'An error occurred' };
 	}
-
-	const hashedPassword = await saltAndHashPassword(validationResult.data.password);
-
-	const updatedUser = await userRepository.saveUser({
-		email: validationResult.data.email,
-		name: validationResult.data.name,
-		password: hashedPassword,
-	});
-
-	if (!updatedUser) {
-		return {
-			success: false,
-			errors: {
-				email: ['Error creating user'],
-			},
-		};
-	}
-
-	const sendEmailVerificationResponse = await sendEmailVerification(validationResult.data.email);
-	if (!sendEmailVerificationResponse.success) {
-		return {
-			success: false,
-			errors: {
-				email: ['Error sending email verification'],
-			},
-		};
-	}
-
-	redirect('/auth/email-verify');
 }

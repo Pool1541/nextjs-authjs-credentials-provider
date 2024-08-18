@@ -1,1 +1,2 @@
-export { default as userRepository } from './user/dependencies';
+export * from './user-repository';
+export * from './verification-token-repository';

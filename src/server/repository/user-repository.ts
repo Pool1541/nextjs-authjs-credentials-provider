@@ -3,7 +3,7 @@ import { ConflictException } from '@/server/helpers';
 import { CreateUserDTO, Repository, UpdateUserDTO, User } from '@/server/types/user';
 import prisma from '@/server/shared/prisma';
 
-export class PrismaUserRepository implements Repository<User, CreateUserDTO> {
+export class UserRepository implements Repository<User, CreateUserDTO> {
 	async getOne(email: string): Promise<User | null> {
 		const user = await prisma.user.findUnique({
 			where: {
